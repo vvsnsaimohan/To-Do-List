@@ -50,7 +50,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://front.bluemix.net']
+CSRF_TRUSTED_ORIGINS = ['https://tasklists.azurewebsites.net']
 
 ROOT_URLCONF = "myproject.urls"
 
