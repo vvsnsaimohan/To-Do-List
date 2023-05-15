@@ -50,6 +50,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://front.bluemix.net']
+
 ROOT_URLCONF = "myproject.urls"
 
 TEMPLATES = [
