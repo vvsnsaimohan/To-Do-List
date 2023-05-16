@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-%uy$##rb%@b7t9d8xj!$qjy6=pw7c1fb94wk@xs%-*^x*%o0)t
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ['https://tasklists.azurewebsites.net','https://gajinitasks.azurewebsites.net/']
 
 # Application definition
 
@@ -49,8 +49,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-CSRF_TRUSTED_ORIGINS = ['https://tasklists.azurewebsites.net']
 
 ROOT_URLCONF = "myproject.urls"
 
