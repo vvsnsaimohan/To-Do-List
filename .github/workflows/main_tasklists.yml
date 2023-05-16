@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'TaskLists'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AE59E6E06AE14542B5D0B605060ABABF }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EAE1917FE8BC40AAA460A3B501811FE8 }}
