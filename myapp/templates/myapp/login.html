@@ -1,16 +1,166 @@
-{% extends 'myapp/main.html' %}
-{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Encryption</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+    }
+    
+    .content {
+      max-width: 500px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-<div class="header-bar">
-    <h1>Login</h1>
-</div>
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-top: 0;
+    }
 
-<div class="card-body">
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <input class="button" type="submit" value="Login">
+    h3 {
+      text-align: center;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+      font-weight: bold;
+    }
+    
+    textarea {
+      width: 100%;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    
+    input[type="submit"] {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .encrypted-data {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: #f9f9f9;
+      color: #333;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h1>Data Encryption</h1>
+    <h3>{{edt}}</h3>
+    
+    <form id="encryptionForm">
+      <label for="data">Data to Encrypt/Decrypt:</label>
+      <textarea id="data" name="data" required></textarea>
+      <br><br>
+      
+      <label for="key">Encryption/Decryption Key:</label>
+      <input type="password" id="key" name="key" required>
+      <br><br>
+      <div style="text-align: center;">
+        <input type="submit" id="encryptButton" value="Encrypt"> &nbsp;&nbsp;
+        <input type="submit" id="decryptButton" value="Decrypt">
+      </div>
     </form>
-    <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
-</div>
-{% endblock content %}
+    
+    <label for="data">Encrypted/Decrypted Data:</label>
+    <div class="encrypted-data" id="resultData"></div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+  <script>
+    function handleEncryption(event) {
+      event.preventDefault();
+      
+      var data = document.getElementById('data').value;
+      var key = document.getElementById('key').value;
+      
+      // Encrypt the data using AES encryption algorithm
+      var encryptedData = encryptAES(data, key);
+      
+      // Display the encrypted data
+      document.getElementById('resultData').textContent = encryptedData;
+    }
+    
+    function handleDecryption(event) {
+      event.preventDefault();
+      
+      var data = document.getElementById('data').value;
+      var key = document.getElementById('key').value;
+      
+      // Decrypt the data using AES encryption algorithm
+      var decryptedData = decryptAES(data, key);
+      
+      // Display the decrypted data
+      document.getElementById('resultData').textContent = decryptedData;
+    }
+    
+    function encryptAES(data, key) {
+      var salt = CryptoJS.lib.WordArray.random(16); // Generate a random salt
+      var derivedKey = CryptoJS.PBKDF2(key, salt, {
+        keySize: 256 / 32, // 256-bit key
+        iterations: 10000, // Number of iterations for key derivation
+        hasher: CryptoJS.algo.SHA256 // Hashing algorithm for key derivation
+      });
+
+      var encryptedData = CryptoJS.AES.encrypt(data, derivedKey, {
+        iv: salt // Use the salt as the initialization vector (IV)
+      }).toString();
+
+      // Combine the salt and encrypted data for storage
+      var combinedData = CryptoJS.enc.Hex.stringify(salt) + encryptedData;
+
+      return combinedData;
+    }
+
+    function decryptAES(data, key) {
+      var salt = CryptoJS.enc.Hex.parse(data.substr(0, 32));
+      var encryptedData = data.substr(32);
+
+      var derivedKey = CryptoJS.PBKDF2(key, salt, {
+        keySize: 256 / 32,
+        iterations: 10000,
+        hasher: CryptoJS.algo.SHA256
+      });
+
+      var decryptedData = CryptoJS.AES.decrypt(encryptedData, derivedKey, {
+        iv: salt,
+        padding: CryptoJS.pad.Pkcs7,
+        mode: CryptoJS.mode.CBC
+      }).toString(CryptoJS.enc.Utf8);
+
+      return decryptedData;
+    }
+    
+    var encryptButton = document.getElementById('encryptButton');
+    encryptButton.addEventListener('click', handleEncryption);
+    
+    var decryptButton = document.getElementById('decryptButton');
+    decryptButton.addEventListener('click', handleDecryption);
+  </script>
+</body>
+</html>
