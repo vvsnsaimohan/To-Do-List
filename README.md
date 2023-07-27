@@ -1,6 +1,6 @@
 # To-Do-List
-Code files for the project.
 
+Developed To-do-list D-jango application.
 
 <img width="310" alt="image" src="https://github.com/VennamVenkataSivaNagaSaiMohan/To-Do-List/assets/76605638/c481842c-ba82-41c8-aa36-056201b2efcd">
 <img width="310" alt="image" src="https://github.com/VennamVenkataSivaNagaSaiMohan/To-Do-List/assets/76605638/c3c29a3c-2bfb-42ef-b911-b96d21be006b">
